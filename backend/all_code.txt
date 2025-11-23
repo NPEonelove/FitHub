@@ -1,0 +1,616 @@
+
+================================================================================
+ФАЙЛ: .\collect_code.py
+================================================================================
+
+import os
+import argparse
+
+def should_include_file(file_path, extensions, exclude_dirs):
+    """Проверяет, нужно ли включать файл в результат"""
+    # Проверяем расширение файла
+    if extensions and not any(file_path.endswith(ext) for ext in extensions):
+        return False
+    
+    # Проверяем, не находится ли файл в исключенной директории
+    abs_path = os.path.abspath(file_path)
+    for exclude_dir in exclude_dirs:
+        if exclude_dir in abs_path:
+            return False
+    
+    return True
+
+def collect_code_files(root_dir, output_file, extensions=None, exclude_dirs=None):
+    """
+    Рекурсивно собирает содержимое файлов в указанной директории
+    
+    Args:
+        root_dir (str): Корневая директория для поиска
+        output_file (str): Имя выходного файла
+        extensions (list): Список расширений файлов для включения (например ['.py', '.js', '.txt'])
+        exclude_dirs (list): Список директорий для исключения
+    """
+    if extensions is None:
+        extensions = ['.py', '.js', '.java', '.cpp', '.c', '.html', '.css', '.php', '.rb', '.go', '.rs', '.ts']
+    
+    if exclude_dirs is None:
+        exclude_dirs = ['.git', '__pycache__', 'node_modules', 'venv', '.venv', 'env']
+    
+    # Добавляем полные пути для исключенных директорий
+    exclude_dirs_full = [os.path.abspath(exclude_dir) for exclude_dir in exclude_dirs]
+    
+    with open(output_file, 'w', encoding='utf-8') as out_f:
+        for root, dirs, files in os.walk(root_dir):
+            # Исключаем директории из поиска
+            dirs[:] = [d for d in dirs if os.path.abspath(os.path.join(root, d)) not in exclude_dirs_full]
+            
+            for file in files:
+                file_path = os.path.join(root, file)
+                
+                if should_include_file(file_path, extensions, exclude_dirs_full):
+                    try:
+                        # Записываем разделитель с путем к файлу
+                        out_f.write(f"\n{'='*80}\n")
+                        out_f.write(f"ФАЙЛ: {file_path}\n")
+                        out_f.write(f"{'='*80}\n\n")
+                        
+                        # Читаем и записываем содержимое файла
+                        with open(file_path, 'r', encoding='utf-8') as in_f:
+                            content = in_f.read()
+                            out_f.write(content)
+                            out_f.write('\n')  # Добавляем пустую строку в конце файла
+                            
+                    except UnicodeDecodeError:
+                        # Пропускаем бинарные файлы
+                        out_f.write(f"(бинарный файл или неподдерживаемая кодировка)\n\n")
+                    except Exception as e:
+                        out_f.write(f"(ошибка при чтении файла: {str(e)})\n\n")
+
+def main():
+    parser = argparse.ArgumentParser(description='Сборщик кода из всех файлов в директории')
+    parser.add_argument('--output', '-o', default='all_code.txt', 
+                       help='Имя выходного файла (по умолчанию: all_code.txt)')
+    parser.add_argument('--dir', '-d', default='.', 
+                       help='Корневая директория для поиска (по умолчанию: текущая директория)')
+    parser.add_argument('--extensions', '-e', nargs='+', 
+                       help='Расширения файлов для включения (например: .py .js .html)')
+    parser.add_argument('--exclude-dirs', '-x', nargs='+',
+                       help='Директории для исключения')
+    
+    args = parser.parse_args()
+    
+    # Запускаем сбор файлов
+    collect_code_files(
+        root_dir=args.dir,
+        output_file=args.output,
+        extensions=args.extensions,
+        exclude_dirs=args.exclude_dirs
+    )
+    
+    print(f"Все файлы собраны в: {args.output}")
+
+if __name__ == "__main__":
+    main()
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\BackendApplication.java
+================================================================================
+
+package org.npeonelove.backend;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BackendApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(BackendApplication.class, args);
+    }
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\config\ApplicationConfig.java
+================================================================================
+
+package org.npeonelove.backend.config;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class ApplicationConfig {
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\controller\GlobalExceptionHandler.java
+================================================================================
+
+package org.npeonelove.backend.controller;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\controller\TrainController.java
+================================================================================
+
+package org.npeonelove.backend.controller;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.npeonelove.backend.dto.train.CreateTrainRequestDTO;
+import org.npeonelove.backend.dto.train.CreateTrainResponseDTO;
+import org.npeonelove.backend.dto.train.GetTrainResponseDTO;
+import org.npeonelove.backend.exception.train.TrainValidationException;
+import org.npeonelove.backend.service.TrainService;
+import org.npeonelove.backend.utils.ValidationUtils;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@CrossOrigin("*")
+@RestController
+@RequestMapping("/api/v1/trains")
+@RequiredArgsConstructor
+public class TrainController {
+
+    private final ValidationUtils validationUtils;
+    private final TrainService trainService;
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
+
+    // создать новую тренировку
+    @PostMapping
+    public ResponseEntity<CreateTrainResponseDTO> createTrain(@RequestBody @Valid CreateTrainRequestDTO createTrainRequestDTO,
+                                                              BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new TrainValidationException(validationUtils.getValidationErrors(bindingResult));
+        }
+
+        return ResponseEntity.ok(trainService.createTrain(createTrainRequestDTO));
+    }
+
+    // получить тренировку
+    @GetMapping("/{trainId}")
+    public ResponseEntity<GetTrainResponseDTO> getTrain(@PathVariable("trainId") UUID trainId) {
+        return ResponseEntity.ok(trainService.getTrain(trainId));
+    }
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\dto\train\CreateTrainRequestDTO.java
+================================================================================
+
+package org.npeonelove.backend.dto.train;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class CreateTrainRequestDTO {
+
+    @NotBlank(message = "Введите название тренировки")
+    @Size(max = 32, message = "Длина названия тренировки должна быть не более 32 символов")
+    private String title;
+
+    @Size(max = 2048, message = "Длина описания тренировки должна быть не более 2048 символов")
+    private String description;
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\dto\train\CreateTrainResponseDTO.java
+================================================================================
+
+package org.npeonelove.backend.dto.train;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+@ToString
+public class CreateTrainResponseDTO {
+
+    private UUID trainId;
+    private String title;
+    private String description;
+    private LocalDateTime createdAt;
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\dto\train\GetTrainResponseDTO.java
+================================================================================
+
+package org.npeonelove.backend.dto.train;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+public class GetTrainResponseDTO {
+
+    private UUID trainId;
+    private String title;
+    private String description;
+    private LocalDateTime createdAt;
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\exception\train\TrainNotFoundException.java
+================================================================================
+
+package org.npeonelove.backend.exception.train;
+
+public class TrainNotFoundException extends RuntimeException {
+    public TrainNotFoundException(String message) {
+        super(message);
+    }
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\exception\train\TrainValidationException.java
+================================================================================
+
+package org.npeonelove.backend.exception.train;
+
+public class TrainValidationException extends RuntimeException {
+    public TrainValidationException(String message) {
+        super(message);
+    }
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\mapper\train\TrainMapper.java
+================================================================================
+
+package org.npeonelove.backend.mapper.train;
+
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.npeonelove.backend.dto.train.CreateTrainRequestDTO;
+import org.npeonelove.backend.dto.train.CreateTrainResponseDTO;
+import org.npeonelove.backend.dto.train.GetTrainResponseDTO;
+import org.npeonelove.backend.model.train.Train;
+
+@Mapper(componentModel = "spring")
+public interface TrainMapper {
+
+    Train toEntity(CreateTrainRequestDTO createTrainRequestDTO);
+
+    CreateTrainResponseDTO toCreateResponse(Train train);
+    GetTrainResponseDTO toGetResponse(Train train);
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\model\exercise\Exercise.java
+================================================================================
+
+package org.npeonelove.backend.model.exercise;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.npeonelove.backend.model.train.Train;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.UUID;
+
+@Entity
+@Table(name = "exercises")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+@Builder
+public class Exercise {
+
+    @Id
+    @Column(name = "exercise_id")
+    private UUID exerciseId;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "text")
+    private String text;
+
+    @Column(name = "created_at")
+    private LocalDateTime created_at;
+
+    @ManyToOne
+    @JoinColumn(name = "train_id")
+    private Train train;
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\model\train\Train.java
+================================================================================
+
+package org.npeonelove.backend.model.train;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.CurrentTimestamp;
+import org.hibernate.annotations.UuidGenerator;
+import org.npeonelove.backend.model.exercise.Exercise;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+@Entity
+@Table(name = "trains")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+@Builder
+public class Train {
+
+    @Id
+    @UuidGenerator
+    @Column(name = "train_id")
+    private UUID trainId;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "train", fetch = FetchType.LAZY)
+    private List<Exercise> exercises;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\repository\TrainRepository.java
+================================================================================
+
+package org.npeonelove.backend.repository;
+
+import org.npeonelove.backend.model.train.Train;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@Repository
+public interface TrainRepository extends JpaRepository<Train, UUID> {
+
+    Optional<Train> findTrainByTrainId(UUID trainId);
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\service\TrainService.java
+================================================================================
+
+package org.npeonelove.backend.service;
+
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.npeonelove.backend.dto.train.CreateTrainRequestDTO;
+import org.npeonelove.backend.dto.train.CreateTrainResponseDTO;
+import org.npeonelove.backend.dto.train.GetTrainResponseDTO;
+import org.npeonelove.backend.exception.train.TrainNotFoundException;
+import org.npeonelove.backend.mapper.train.TrainMapper;
+import org.npeonelove.backend.model.train.Train;
+import org.npeonelove.backend.repository.TrainRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class TrainService {
+
+    private final TrainRepository trainRepository;
+    private final TrainMapper trainMapper;
+    private final ModelMapper modelMapper;
+
+    // создать новую тренировку
+    @Transactional
+    public CreateTrainResponseDTO createTrain(CreateTrainRequestDTO createTrainRequestDTO) {
+        Train train = trainRepository.save(trainMapper.toEntity(createTrainRequestDTO));
+        return trainMapper.toCreateResponse(train);
+    }
+
+    // получить тренировку
+    public GetTrainResponseDTO getTrain(UUID trainId) {
+        return trainMapper.toGetResponse(findTrainById(trainId));
+    }
+
+    // удалить тренировку
+    @Transactional
+    public void deleteTrain(UUID trainId) {
+        trainRepository.delete(findTrainById(trainId));
+    }
+
+    // получить сущность Train
+    private Train findTrainById(UUID trainId) {
+        return trainRepository.findTrainByTrainId(trainId).orElseThrow(
+                () -> new TrainNotFoundException("Train with id " + trainId + " not found")
+        );
+    }
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\main\java\org\npeonelove\backend\utils\ValidationUtils.java
+================================================================================
+
+package org.npeonelove.backend.utils;
+
+import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+
+@Component
+public class ValidationUtils {
+
+    public String getValidationErrors(BindingResult bindingResult) {
+        StringBuilder errors = new StringBuilder();
+        for (FieldError error : bindingResult.getFieldErrors()) {
+            errors.append(error.getDefaultMessage());
+            errors.append(". ");
+        }
+        return errors.toString().trim();
+    }
+
+}
+
+
+================================================================================
+ФАЙЛ: .\src\test\java\org\npeonelove\backend\BackendApplicationTests.java
+================================================================================
+
+package org.npeonelove.backend;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class BackendApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
+
+
+================================================================================
+ФАЙЛ: .\target\generated-sources\annotations\org\npeonelove\backend\mapper\train\TrainMapperImpl.java
+================================================================================
+
+package org.npeonelove.backend.mapper.train;
+
+import javax.annotation.processing.Generated;
+import org.npeonelove.backend.dto.train.CreateTrainRequestDTO;
+import org.npeonelove.backend.dto.train.CreateTrainResponseDTO;
+import org.npeonelove.backend.dto.train.GetTrainResponseDTO;
+import org.npeonelove.backend.model.train.Train;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2025-11-18T03:48:00+0400",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.6 (Oracle Corporation)"
+)
+@Component
+public class TrainMapperImpl implements TrainMapper {
+
+    @Override
+    public Train toEntity(CreateTrainRequestDTO createTrainRequestDTO) {
+        if ( createTrainRequestDTO == null ) {
+            return null;
+        }
+
+        Train.TrainBuilder train = Train.builder();
+
+        train.title( createTrainRequestDTO.getTitle() );
+        train.description( createTrainRequestDTO.getDescription() );
+
+        return train.build();
+    }
+
+    @Override
+    public CreateTrainResponseDTO toCreateResponse(Train train) {
+        if ( train == null ) {
+            return null;
+        }
+
+        CreateTrainResponseDTO createTrainResponseDTO = new CreateTrainResponseDTO();
+
+        createTrainResponseDTO.setTrainId( train.getTrainId() );
+        createTrainResponseDTO.setTitle( train.getTitle() );
+        createTrainResponseDTO.setDescription( train.getDescription() );
+        createTrainResponseDTO.setCreatedAt( train.getCreatedAt() );
+
+        return createTrainResponseDTO;
+    }
+
+    @Override
+    public GetTrainResponseDTO toGetResponse(Train train) {
+        if ( train == null ) {
+            return null;
+        }
+
+        GetTrainResponseDTO getTrainResponseDTO = new GetTrainResponseDTO();
+
+        getTrainResponseDTO.setTrainId( train.getTrainId() );
+        getTrainResponseDTO.setTitle( train.getTitle() );
+        getTrainResponseDTO.setDescription( train.getDescription() );
+        getTrainResponseDTO.setCreatedAt( train.getCreatedAt() );
+
+        return getTrainResponseDTO;
+    }
+}
+
