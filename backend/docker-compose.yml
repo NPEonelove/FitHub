@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  tp_db:
+    image: postgres:15
+    container_name: tp
+    environment:
+      POSTGRES_DB: "tp"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "1"
+    networks:
+      - tp-network
+    ports:
+      - "5469:5432"
+    volumes:
+      - postgres-tp-data:/var/lib/postgresql/data
+
+#  tp-backend:
+#    build:
+#      context: .
+#    container_name: tp-backend
+#    environment:
+#      SERVER_PORT: 8080
+#      JWT_SECRET_KEY: "s7k5n2x9r1v6y8w4z7u5i3o9l2p5n0x3r1v6y8w4z7u5i3o9l2p5n0x3"
+#      SPRING_DATASOURCE_URL: "jdbc:postgresql://tp:5432/tp"
+#      SPRING_DATASOURCE_USERNAME: "postgres"
+#      SPRING_DATASOURCE_PASSWORD: "1"
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - tp_db
+#    networks:
+#      - tp-network
+
+networks:
+  tp-network:
+    driver: bridge
+
+volumes:
+  postgres-tp-data:
