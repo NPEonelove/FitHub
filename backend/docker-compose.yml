@@ -1,40 +1,40 @@
 version: "3.9"
 
 services:
-  tp_db:
+  fithub_db:
     image: postgres:15
-    container_name: tp
+    container_name: fithub
     environment:
-      POSTGRES_DB: "tp"
+      POSTGRES_DB: "fithub"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "1"
     networks:
-      - tp-network
+      - fithub-network
     ports:
       - "5469:5432"
     volumes:
-      - postgres-tp-data:/var/lib/postgresql/data
+      - postgres-fithub-data:/var/lib/postgresql/data
 
-#  tp-backend:
-#    build:
-#      context: .
-#    container_name: tp-backend
-#    environment:
-#      SERVER_PORT: 8080
-#      JWT_SECRET_KEY: "s7k5n2x9r1v6y8w4z7u5i3o9l2p5n0x3r1v6y8w4z7u5i3o9l2p5n0x3"
-#      SPRING_DATASOURCE_URL: "jdbc:postgresql://tp:5432/tp"
-#      SPRING_DATASOURCE_USERNAME: "postgres"
-#      SPRING_DATASOURCE_PASSWORD: "1"
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - tp_db
-#    networks:
-#      - tp-network
+  fithub-backend:
+    build:
+      context: .
+    container_name: fithub-backend
+    environment:
+      SERVER_PORT: 8080
+      JWT_SECRET_KEY: "s7k5n2x9r1v6y8w4z7u5i3o9l2p5n0x3r1v6y8w4z7u5i3o9l2p5n0x3"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://fithub:5432/fithub"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "1"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - fithub_db
+    networks:
+      - fithub-network
 
 networks:
-  tp-network:
+  fithub-network:
     driver: bridge
 
 volumes:
-  postgres-tp-data:
+  postgres-fithub-data:
