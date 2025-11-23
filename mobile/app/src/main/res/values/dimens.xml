@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="sign_up_marginTop">30dp</dimen>
+    <dimen name="auth_margineEnd">30dp</dimen>
+    <dimen name="activity_auth_buttons">197.5dp</dimen>
+</resources>
