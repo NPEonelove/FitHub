@@ -60,9 +60,9 @@ public class AuthService {
 
         user = userRepository.save(user);
 
-        for (int i = 0; i < 3; i++) {
-
-        }
+//        for (int i = 0; i < 3; i++) {
+//            trainService.createDemoTrain(user);
+//        }
 
         return jwtService.generateAuthToken(user.getUserId());
     }

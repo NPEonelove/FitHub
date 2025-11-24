@@ -34,7 +34,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Train> trains;
 
     @Column(name = "registration_date")

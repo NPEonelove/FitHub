@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 import org.npeonelove.backend.model.exercise.Exercise;
+import org.npeonelove.backend.model.user.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,6 +39,10 @@ public class Train {
 
     @OneToMany(mappedBy = "train", fetch = FetchType.LAZY)
     private List<Exercise> exercises;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @PrePersist
     protected void onCreate() {

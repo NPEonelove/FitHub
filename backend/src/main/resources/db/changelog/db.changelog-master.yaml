@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/versions/user/01-create_users_table.sql
   - include:
       file: db/changelog/versions/train/01-create_trains_table.sql
+  - include:
+      file: db/changelog/versions/train/02-update_constraints_trains_table.sql

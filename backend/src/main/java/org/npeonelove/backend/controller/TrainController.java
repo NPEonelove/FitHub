@@ -13,13 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/trains")
 @RequiredArgsConstructor
-@Hidden
+//@Hidden
 public class TrainController {
 
     private final ValidationUtils validationUtils;
@@ -31,6 +32,7 @@ public class TrainController {
     }
 
     // создать новую тренировку
+    @Hidden
     @PostMapping
     public ResponseEntity<CreateTrainResponseDTO> createTrain(@RequestBody @Valid CreateTrainRequestDTO createTrainRequestDTO,
                                                               BindingResult bindingResult) {
@@ -39,6 +41,24 @@ public class TrainController {
         }
 
         return ResponseEntity.ok(trainService.createTrain(createTrainRequestDTO));
+    }
+
+    // создать демо тренировки для юзера
+    @PostMapping("/{userId}/create-demo-trains")
+    public ResponseEntity<Boolean> createDemoTrains(@PathVariable("userId") UUID userId) {
+        return ResponseEntity.ok(trainService.createDemoTrains(userId));
+    }
+
+    // получить тренировки определенного пользователя
+    @GetMapping("/{userId}/get-all-trains")
+    public ResponseEntity<List<GetTrainResponseDTO>> getTrainsByUserId(@PathVariable("userId") UUID userId) {
+        return ResponseEntity.ok(trainService.findAllByUser(userId));
+    }
+
+    // получить все тренировки
+    @GetMapping()
+    public ResponseEntity<List<GetTrainResponseDTO>> getTrains() {
+        return ResponseEntity.ok(trainService.findAll());
     }
 
     // получить тренировку
