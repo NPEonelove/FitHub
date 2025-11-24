@@ -35,6 +35,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final TrainService trainService;
 //    private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${refresh-token.ttl}")
@@ -57,7 +58,11 @@ public class AuthService {
         user.setRole(UserRoleEnum.USER);
         user.setRegistrationDate(LocalDateTime.now());
 
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+//        for (int i = 0; i < 3; i++) {
+//            trainService.createDemoTrain(user);
+//        }
 
         return jwtService.generateAuthToken(user.getUserId());
     }

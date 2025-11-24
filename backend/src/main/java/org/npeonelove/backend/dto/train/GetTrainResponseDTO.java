@@ -11,6 +11,7 @@ import java.util.UUID;
 public class GetTrainResponseDTO {
 
     private UUID trainId;
+    private UUID userId;
     private String title;
     private String description;
     private LocalDateTime createdAt;

@@ -1,6 +1,7 @@
 package org.npeonelove.backend.repository;
 
 import org.npeonelove.backend.model.train.Train;
+import org.npeonelove.backend.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,5 @@ public interface TrainRepository extends JpaRepository<Train, UUID> {
 
     Optional<Train> findTrainByTrainId(UUID trainId);
 
+    Train[] findTrainByUser(User user);
 }
