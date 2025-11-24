@@ -31,6 +31,20 @@ public class TrainService {
         return trainMapper.toCreateResponse(train);
     }
 
+    // создать тестовую тренировку
+   @Transactional
+   public Train createDemoTrain() {
+        UUID trainId = UUID.randomUUID();
+
+        Train train = Train.builder()
+                .trainId(trainId)
+                .title("Train title " + trainId)
+                .description("Train description " + trainId)
+                .build();
+
+        return trainRepository.save(train);
+   }
+
     // получить тренировку
     public GetTrainResponseDTO getTrain(UUID trainId) {
         return trainMapper.toGetResponse(findTrainById(trainId));

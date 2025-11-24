@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d72c6b56-aef5-4ecc-92aa-c6ed401adeea" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/npeonelove/backend/model/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/npeonelove/backend/model/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/npeonelove/backend/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/npeonelove/backend/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/npeonelove/backend/service/TrainService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/npeonelove/backend/service/TrainService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +58,7 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.BackendApplication.executor": "Run",
