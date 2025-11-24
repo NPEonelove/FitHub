@@ -1,5 +1,6 @@
 package org.npeonelove.backend.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.npeonelove.backend.dto.train.CreateTrainRequestDTO;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/trains")
 @RequiredArgsConstructor
+@Hidden
 public class TrainController {
 
     private final ValidationUtils validationUtils;

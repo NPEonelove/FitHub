@@ -92,6 +92,10 @@ public class AuthController {
         return ResponseEntity.ok(authService.changePassword(changePasswordRequestDTO));
     }
 
+    @Operation(
+            summary = "Запрос чтобы протестировать, что аутентификация работает",
+            description = "Требует авторизованного запроса"
+    )
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("test");
