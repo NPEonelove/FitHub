@@ -97,7 +97,10 @@
     "Spring Boot.BackendApplication.executor": "Run",
     "Spring Boot.EurekaServerApplication.executor": "Run",
     "git-widget-placeholder": "backend",
+<<<<<<< Updated upstream
     "ignore.virus.scanning.warn.message": "true",
+=======
+>>>>>>> Stashed changes
     "last_opened_file_path": "/home/meowlove/Desktop/FitHub/backend/api-gateway",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
