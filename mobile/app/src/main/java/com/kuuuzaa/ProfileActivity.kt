@@ -1,6 +1,7 @@
 package com.kuuuzaa
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -64,7 +65,7 @@ class ProfileActivity : AppCompatActivity() {
         val profileUserId: TextView = findViewById(R.id.user_id)
 
         val profileUser = intent.getStringExtra("USER_ID") ?: ""
-        val profileAccessToken = "Bearer " + intent.getStringExtra("USER_ACCESSTOKEN") ?: ""
+        val profileAccessToken = intent.getStringExtra("USER_ACCESSTOKEN") ?: ""
         val profileRefreshToken = intent.getStringExtra("USER_REFRESHTOKEN") ?: ""
 
         profileUserId.text = profileUser.toString()
@@ -73,8 +74,15 @@ class ProfileActivity : AppCompatActivity() {
 
         buttonCreateTrain.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                mainApi.createTestTrains(profileAccessToken, profileUser)
+                mainApi.createTestTrains("Bearer " + profileAccessToken, profileUser)
             }
+            val intentProfile = Intent(this@ProfileActivity, ProfileActivity::class.java).apply {
+                putExtra("USER_ID", profileUser)
+                putExtra("USER_ACCESSTOKEN", profileAccessToken)
+                putExtra("USER_REFRESHTOKEN",profileRefreshToken)
+            }
+
+            startActivity(intentProfile)
         }
 
 
@@ -87,7 +95,7 @@ class ProfileActivity : AppCompatActivity() {
         println(profileAccessToken)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val list = mainApi.getAllTrainsByIdAuth(profileAccessToken, profileUser)
+            val list = mainApi.getAllTrainsByIdAuth("Bearer " + profileAccessToken, profileUser)
             runOnUiThread {
                 binding.apply {
                     adapter.submitList(list)
