@@ -1,43 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lst_train"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#131316"
-    android:orientation="vertical"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="135dp"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="0dp"
+    android:layout_gravity="center"
+    android:backgroundTint="#131316">
+    <LinearLayout
+        android:id="@+id/lst_train"
+        android:layout_width="match_parent"
+        android:layout_height="135dp"
+        android:background="#131316"
+        android:layout_marginHorizontal="0dp"
+        android:orientation="vertical">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="350dp"
-        android:layout_height="130dp"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="30dp"
-        android:background="@drawable/rounded_bg_trains">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="330dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="30dp"
+            android:background="@drawable/rounded_bg_trains">
 
 
-        <TextView
-            android:id="@+id/listTrainTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="@dimen/train_marginTop_title"
-            android:layout_marginStart="@dimen/train_marginStart"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/listTrainTitle"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:text="TextView"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="@dimen/train_marginTop_title"
+                android:layout_marginStart="@dimen/train_marginStart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/listTrainDesc"
-            android:layout_width="316dp"
-            android:layout_height="73dp"
-            android:text="TextView"
-            android:textColor="#868686"
-            android:layout_marginStart="@dimen/train_marginStart"
-            android:layout_marginTop="@dimen/train_marginTop_disc"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listTrainTitle" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+            <TextView
+                android:id="@+id/listTrainDesc"
+                android:layout_width="match_parent"
+                android:layout_height="73dp"
+                android:layout_marginTop="@dimen/train_marginTop_disc"
+                android:layout_marginHorizontal="@dimen/train_marginStart"
+                android:text="TextView"
+                android:textColor="#868686"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listTrainTitle" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

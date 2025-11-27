@@ -2,7 +2,7 @@ package com.kuuuzaa.retrofit
 
 class UrlAdress {
     fun getAdress():String {
-        return "https://deluxe-step-cute-floppy.trycloudflare.com"
+        return "https://identification-tricks-players-same.trycloudflare.com"
     }
 
 }

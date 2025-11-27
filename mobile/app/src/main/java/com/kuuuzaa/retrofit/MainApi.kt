@@ -21,4 +21,8 @@ interface MainApi {
     @GET("/api/v1/trains/{userId}/get-all-trains")
     suspend fun getAllTrainsByIdAuth(@Header("Authorization") token: String, @Path("userId") userId:String): List<Train>
 
+    @Headers("Content-Type: application/json")
+
+    @POST("/api/v1/trains/{userId}/create-demo-trains")
+    suspend fun createTestTrains(@Header("Authorization") token: String, @Path("userId") userId:String)
 }

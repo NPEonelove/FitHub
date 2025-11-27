@@ -2,7 +2,8 @@ package com.kuuuzaa
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.EditText
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,11 +12,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kuuuzaa.adapter.TrainAdapter
 import com.kuuuzaa.mobile.R
-import com.kuuuzaa.mobile.databinding.ActivityMainBinding
 import com.kuuuzaa.mobile.databinding.ActivityProfileBinding
 import com.kuuuzaa.retrofit.MainApi
 import com.kuuuzaa.retrofit.UrlAdress
-import com.kuuuzaa.retrofit.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +27,8 @@ class ProfileActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     private lateinit var adapter: TrainAdapter
     lateinit var binding: ActivityProfileBinding
+
+    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -68,6 +69,16 @@ class ProfileActivity : AppCompatActivity() {
 
         profileUserId.text = profileUser.toString()
 
+        val buttonCreateTrain: ImageButton = findViewById(R.id.button_add_train)
+
+        buttonCreateTrain.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                mainApi.createTestTrains(profileAccessToken, profileUser)
+            }
+        }
+
+
+
 
         println("__________________________________________________________________________________________________")
         println("__________________________________________________________________________________________________")
@@ -75,14 +86,14 @@ class ProfileActivity : AppCompatActivity() {
         println("UserId:" + profileUser)
         println(profileAccessToken)
 
-        CoroutineScope(Dispatchers.IO).launch{
+        CoroutineScope(Dispatchers.IO).launch {
             val list = mainApi.getAllTrainsByIdAuth(profileAccessToken, profileUser)
-            runOnUiThread{
-                binding.apply{
+            runOnUiThread {
+                binding.apply {
                     adapter.submitList(list)
                 }
             }
         }
-        }
-
     }
+
+}
