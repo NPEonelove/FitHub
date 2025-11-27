@@ -3,4 +3,12 @@
     <dimen name="sign_up_marginTop">30dp</dimen>
     <dimen name="auth_margineEnd">30dp</dimen>
     <dimen name="activity_auth_buttons">197.5dp</dimen>
+    <dimen name="profile_trains__marginTop">20dp</dimen>
+    <dimen name="train_marginTop_title">10dp</dimen>
+    <dimen name="train_marginStart">20dp</dimen>
+    <dimen name="train_marginTop_disc">10dp</dimen>
+    <dimen name="nav_menu_margTop">5dp</dimen>
+    <dimen name="nav_menu_margBottom">20dp</dimen>
+
+
 </resources>

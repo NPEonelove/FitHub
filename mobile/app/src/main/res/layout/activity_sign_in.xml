@@ -34,9 +34,10 @@
             android:id="@+id/text_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="112dp"
+            android:layout_marginEnd="116dp"
             android:text="Sign Up"
             android:textColor="#4300A2"
+            android:layout_marginBottom="@dimen/sign_up_marginTop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -45,19 +46,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
-            android:layout_marginBottom="4dp"
             android:text="New here?"
             android:textColor="#FFFFFF"
+            android:layout_marginBottom="@dimen/sign_up_marginTop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/text_sign_in"
-            app:layout_constraintHorizontal_bias="0.904"
+            app:layout_constraintHorizontal_bias="0.792"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/email_sign_in"
             android:layout_width="300dp"
             android:layout_height="60dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="65dp"
             android:background="@drawable/rounded_textplain"
             android:ems="10"
             android:hint="Enter your email"
@@ -98,6 +99,7 @@
             android:gravity="center"
             android:text="Sign in"
             android:textColor="#FFFFFF"
+            android:visibility="visible"
             app:cornerRadius="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"
