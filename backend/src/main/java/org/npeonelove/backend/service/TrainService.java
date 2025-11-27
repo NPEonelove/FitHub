@@ -41,7 +41,7 @@ public class TrainService {
     @Transactional
     public Boolean createDemoTrains(UUID trainId) {
         User user = userService.getUserByUUID(trainId);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 3; i++) {
             Train train = Train.builder()
                     .user(user)
                     .title("Train title " + UUID.randomUUID())
