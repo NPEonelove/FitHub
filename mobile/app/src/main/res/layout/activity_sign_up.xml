@@ -18,11 +18,11 @@
 
         <TextView
             android:id="@+id/textView_Sign_up"
-            android:layout_width="125dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginTop="40dp"
             android:gravity="center"
-            android:text="Sign up"
+            android:text="Регистрация"
             android:textColor="#FFFFFF"
             android:textSize="35dp"
             android:textStyle="bold"
@@ -36,11 +36,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             android:gravity="center"
-            android:text="Sign In"
+            android:text="Вход?"
             android:textColor="#4300A2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.731"
+            app:layout_constraintHorizontal_bias="0.83"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             android:gravity="center"
-            android:text="Already have an account?"
+            android:text="У вас уже есть учетная запись?"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/text_sign_up" />
@@ -61,7 +61,7 @@
             android:layout_marginTop="65dp"
             android:background="@drawable/rounded_textplain"
             android:ems="10"
-            android:hint="Enter your email"
+            android:hint="Введите почту"
             android:inputType="text"
             android:paddingLeft="15dp"
             android:textColorHint="#959595"
@@ -78,7 +78,7 @@
             android:layout_marginTop="@dimen/sign_up_marginTop"
             android:background="@drawable/rounded_textplain"
             android:ems="10"
-            android:hint="Enter your password"
+            android:hint="Введите пароль"
             android:inputType="text"
             android:paddingLeft="15dp"
             android:textColorHint="#959595"
@@ -97,7 +97,7 @@
             android:layout_marginTop="@dimen/sign_up_marginTop"
             android:backgroundTint="#4300A2"
             android:gravity="center"
-            android:text="Sign up"
+            android:text="Зарегистрироваться"
             android:textColor="#FFFFFF"
             app:cornerRadius="15dp"
             app:layout_constraintEnd_toEndOf="parent"

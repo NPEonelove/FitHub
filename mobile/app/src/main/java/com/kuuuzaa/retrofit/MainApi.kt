@@ -6,7 +6,6 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface MainApi {
 
@@ -25,4 +24,14 @@ interface MainApi {
 
     @POST("/api/v1/trains/{userId}/create-demo-trains")
     suspend fun createTestTrains(@Header("Authorization") token: String, @Path("userId") userId:String)
+
+    @Headers("Content-Type: application/json")
+
+    @GET("/api/v1/trains/{trainId}")
+    suspend fun getAllTrains(@Header("Authorization") token: String): List<Train>
+
+    @Headers("Content-Type: application/json")
+
+    @GET("/api/v1/trains/{trainId}")
+    suspend fun getTrainById(@Header("Authorization") token: String, @Path("trainId") trainId:String): List<Train>
 }

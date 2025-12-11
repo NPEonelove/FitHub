@@ -2,7 +2,7 @@ package com.kuuuzaa.retrofit
 
 class UrlAdress {
     fun getAdress():String {
-        return "https://identification-tricks-players-same.trycloudflare.com"
+        return "http://195.133.197.247:8080"
     }
 
 }

@@ -85,8 +85,28 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intentProfile)
         }
 
+        val buttonTrains: ImageButton = findViewById(R.id.button_trains)
+        val buttonProfile: ImageButton = findViewById(R.id.button_profile)
 
+        buttonProfile.setOnClickListener {
+            val intentProfile = Intent(this@ProfileActivity, ProfileActivity::class.java).apply {
+                putExtra("USER_ID", profileUser)
+                putExtra("USER_ACCESSTOKEN", profileAccessToken)
+                putExtra("USER_REFRESHTOKEN",profileRefreshToken)
+            }
 
+            startActivity(intentProfile)
+        }
+
+        buttonTrains.setOnClickListener {
+            val intentTrains = Intent(this@ProfileActivity, TrainsActivity::class.java).apply {
+                putExtra("USER_ID", profileUser)
+                putExtra("USER_ACCESSTOKEN", profileAccessToken)
+                putExtra("USER_REFRESHTOKEN",profileRefreshToken)
+            }
+
+            startActivity(intentTrains)
+        }
 
         println("__________________________________________________________________________________________________")
         println("__________________________________________________________________________________________________")
